@@ -34,7 +34,7 @@ export function params(obj) {
   }
 
   let urlParams = Object.entries(obj)
-    .filter(([key,value]) => value !== null  &&  !(isNaN(value) && typeof value == 'number') && value !== undefined)
+    .filter(([key,value]) => value !== null  &&  !(isNaN(Number(value)) && typeof value == 'number') && value !== undefined)
     .map(keyValueString)
     .join('&');
   //console.log(urlParams);
