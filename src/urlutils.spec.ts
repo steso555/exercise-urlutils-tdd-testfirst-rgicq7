@@ -16,7 +16,6 @@ describe('urlutils', () => {
   });
 
 
-
   describe('params', () => {
     // Write sensible tests.
     it('should return url params string from input object', () => {
@@ -33,7 +32,7 @@ describe('urlutils', () => {
     });
     
     it('should handled bad input values', () => {
-      // { 'foo':[NaN,'y'] } => "foo=y"
+      // { 'foo':[null,'y'] } => "foo=y"
       expect(params({'foo':[null,'y']})).toEqual("foo=y")
     });
   });
