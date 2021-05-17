@@ -15,7 +15,7 @@ export function params(obj) {
 
   function keyValueString(keyAndValue) {
     let key = keyAndValue[0];
-    console.log('key= ', key);
+    //console.log('key= ', key);
     let value = keyAndValue[1];
     let encodedValue = encodeURIComponent(value);
     let encodedKey = encodeURIComponent(key);
