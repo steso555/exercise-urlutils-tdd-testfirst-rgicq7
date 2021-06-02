@@ -57,10 +57,13 @@ describe('urlutils', () => {
     // OUT: { "foo": "42", "b,r": "Bär", baz: ["47", "94"], maz: "" }
     // URL-decode keys and values
     it('should return object of parameters from the passed query string', () => {
-      expect(parseParams('foo=42&b%3Dr=B%C3%A4r&baz=47&baz=94&maz=')).toEqual(
-        { "foo": "42", "b=r": "Bär", baz: ["47", "94"], maz: "" }
+      expect(parseParams('foo=42&b%3Dr=B%C3%A4r&baz=66&baz=54&maz=')).toEqual(
+        { "foo": "42", "b=r": "Bär", baz: ["66", "54"], maz: "" }
       );
     });
+    it('should return object with array of all repeated keys', () => {
+      expect(parseParams('baz=47&baz=94&baz=108')).toEqual(
+        { baz: ['47', '94', '108'], });
+    });
   });
-
 });
