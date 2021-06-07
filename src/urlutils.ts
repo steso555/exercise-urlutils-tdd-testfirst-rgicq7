@@ -1,6 +1,4 @@
 export function pairs(object) {
-  // Return array of arrays of key and value pairs
-  // { "fookey": "foovalue", ... } => [["fookey", "foovalue"], ...]
   var arr = [];
   for (var key in object) {
     arr.push([key, object[key]]);
@@ -17,13 +15,8 @@ export function params(obj) {
     let encodedKey = encodeURIComponent(key);
 
     if (Array.isArray(value)) {
-      let filterArray = el =>
-        el !== null &&
-        !(isNaN(el) && typeof el == 'number') &&
-        el !== undefined;
-
       let urlParams = value
-        .filter(filterArray)
+        .filter(value => !isFalsy(value))
         .map(encodedValue => key + '=' + encodedValue)
         .join('&');
 
@@ -33,13 +26,16 @@ export function params(obj) {
     return `${encodedKey}=${encodedValue}`;
   }
 
-  let filterObj = ([key, value]) =>
-    value !== null &&
-    !(isNaN(value) && typeof value === 'number') &&
-    value !== undefined;
+  function isFalsy(value) {
+    return (
+      value === null ||
+      (isNaN(value) && typeof value === 'number') ||
+      value === undefined
+    );
+  }
 
   let urlParams = Object.entries(obj)
-    .filter(filterObj)
+    .filter(([key_, value]) => !isFalsy(value))
     .map(keyValueString)
     .join('&');
 
@@ -54,13 +50,11 @@ export function parseParams(str) {
     return decodeUri;
   }
 
-  //1. Split(str) in paairs of keys and values
-  let obj = {};
   let keyValuePairs = str.split('&');
   let keyValuePairSplit = keyValuePairs.map(splitPaar);
-
-  for (let i = 0; i < keyValuePairSplit.length; i++) {
-    const [key, value] = keyValuePairSplit[i];
+  
+  const reducer = (obj, paar) => {
+    const [key, value] = paar;
     if (!obj[key]) {
       obj[key] = value;
     } else {
@@ -74,8 +68,7 @@ export function parseParams(str) {
         obj[key] = arr;
       }
     }
+    return obj;
   }
-  console.log('final: ', obj);
-
-  return obj;
+  return keyValuePairSplit.reduce(reducer, {});
 }
